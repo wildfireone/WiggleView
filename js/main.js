@@ -5,8 +5,22 @@
 * @Last modified by:   john
 * @Last modified time: 16-Apr-172017
  */
-
-
+try{
+ var xhr = new XMLHttpRequest();
+ xhr.open('GET', '/path/to/database.sqlite', true);
+ xhr.responseType = 'arraybuffer';
+ xhr.onload = function(e) {
+   var uInt8Array = new Uint8Array(this.response);
+   var db = new SQL.Databse(uInt8Array);
+   var contents = db.exec("SELECT * FROM my_table");
+   console.log(contents);
+   // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+ };
+ xhr.send();
+ }
+ catch(error){
+   console.log(error);
+ }
 
 //set the map and initial coordinates
 var mymap = L.map('mapid').setView([0, 0], 1);
